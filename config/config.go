@@ -7,9 +7,8 @@ import (
 
 // RethinkDB contains db configuration
 type RethinkDB struct {
-	Host     string `json:"host"`
-	Password string `json:"password"`
-	DB       string `json:"db"`
+	Host string `json:"host"`
+	DB   string `json:"db"`
 }
 
 // App contains app configuration includes Server, RethinkDB

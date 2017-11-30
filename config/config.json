@@ -7,7 +7,7 @@
     "prefix": "http://localhost:3001/"
   },
   "rethinkdb": {
-    "user": "kolo",
+    "host": "localhost:28015",
     "password": "yourpassword",
     "db": "shorturl"
   }
