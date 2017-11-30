@@ -3,6 +3,7 @@ package rethinkdb
 import (
 	r "github.com/dancannon/gorethink"
 	config "github.com/namKolo/shorturl/config"
+	model "github.com/namKolo/shorturl/model"
 	storage "github.com/namKolo/shorturl/storage"
 )
 
@@ -25,9 +26,26 @@ func New(dbConfig *config.RethinkDB) (storage.Storage, error) {
 }
 
 func (db *rethinkdb) Save(url string) (string, error) {
-	return "x", nil
+	item := model.NewItem(url)
+	res, err := r.Table("items").Insert(item).RunWrite(db.session)
+	if err != nil {
+		return "", err
+	}
+	id := res.GeneratedKeys[0]
+
+	return id, nil
 }
 
 func (db *rethinkdb) Load(code string) (string, error) {
-	return "http://google.com.vn", nil
+	res, err := r.Table("items").Get(code).Run(db.session)
+	if err != nil {
+		return "", err
+	}
+	var item model.Item
+	err = res.One(&item)
+	if err != nil {
+		return "", err
+	}
+
+	return item.URL, nil
 }

@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	storage "github.com/namKolo/shorturl/storage"
 )
 
@@ -45,7 +46,8 @@ func (h ItemHandler) Redirect(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
-	code := r.URL.Path[len("/"):]
+	vars := mux.Vars(r)
+	code := vars["id"]
 
 	url, err := h.storage.Load(code)
 	if err != nil {

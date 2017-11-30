@@ -36,7 +36,7 @@ func NewApp(config *config.App) (*App, error) {
 func (a *App) setRouters() {
 	itemHandlers := handler.NewItemHandler(a.Config.Options.Prefix, a.Storage)
 	a.Post("/encode", mdw.ResponseHandler(itemHandlers.Encode))
-	a.Get("/", itemHandlers.Redirect)
+	a.Get("/{id}", itemHandlers.Redirect)
 }
 
 // Get wraps the router for GET method
