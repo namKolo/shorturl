@@ -5,29 +5,33 @@ import (
 	"io/ioutil"
 )
 
-// Config contains app configuration includes Server, RethinkDB
-type Config struct {
+// RethinkDB contains db configuration
+type RethinkDB struct {
+	Host     string `json:"host"`
+	Password string `json:"password"`
+	DB       string `json:"db"`
+}
+
+// App contains app configuration includes Server, RethinkDB
+type App struct {
 	Server struct {
 		Host string `json:"host"`
 		Port string `json:"port"`
 	} `json:"server"`
-	RethinkDB struct {
-		Host     string `json:"host"`
-		Password string `json:"password"`
-		DB       string `json:"db"`
-	} `json:"rethinkdb"`
-	Options struct {
+	RethinkDB RethinkDB `json:"rethinkdb"`
+	Options   struct {
 		Prefix string `json:"prefix"`
 	} `json:"options"`
 }
 
-func FromFile(path string) (*Config, error) {
+// FromFile reads configuration from provided path and return App Configuration
+func FromFile(path string) (*App, error) {
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
 
-	var cfg Config
+	var cfg App
 	if err := json.Unmarshal(b, &cfg); err != nil {
 		return nil, err
 	}
